@@ -15,19 +15,23 @@ var config = {
 firebase.initializeApp(config);
 
 
+
 class App extends Component {
+
+
   render() {
     return (
+
       <div className="wrapper">
         <header className="header">Bloc Chatz
         </header >
        <div className="roomlist">
-       <h2>Room List</h2>
        <RoomList firebase={ firebase }/>
        </div>
        <div className="main">
        <p>Messages go here</p>
         </div>
+
       </div>
     );
   }
