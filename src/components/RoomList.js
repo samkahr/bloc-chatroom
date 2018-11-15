@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 
 
 class RoomList extends Component {
-
   constructor (props) {
     super (props);
     this.state = {
     rooms: [],
-    newRoomName: '' };
+    newRoomName: '',
+  };
     this.roomsRef = this.props.firebase.database().ref('rooms');
   }
 
@@ -22,41 +22,41 @@ componentDidMount() {
 
 
 handleChange(e) {
-   this.setState({newRoomName: e.target.value})
+   this.setState({ newRoomName: e.target.value })
 }
 
-handleSubmit(e) {
+handleSubmit() {
 
-       const newRoomName = { name: this.state.newRoomName};
+       const newRoomName = this.state.newRoomName;
        this.roomsRef.push({ name: newRoomName});
-       //this.setState({ rooms: [...this.state.rooms, newRoomName]});
 }
 
   render () {
     return (
-    <section className="chatroom">
+
+    <div className="chatroom">
       <ul>
       <h3>Room List</h3>
-     {this.state.rooms.map( (room) =>
-           <div key={room.key} >
-             {room.name}
+     {this.state.rooms.map( (room, index) =>
+           <div key={index} >
+             <div>{room.name.toString()}</div>
            </div>
          )
        }
        </ul>
 
 
-       <form onSubmit={(e) => this.handleSubmit(e)}>
+     <form onSubmit={ (e) => this.handleSubmit(e) }>
         <input
           type="text"
-          placeholder="New Room Name"
-          onChange={ (e) => this.handleChange(e) }
+          placeholder="Add New Room"
+          value={ this.state.newRoomName }
+          onChange={ (e) => this.handleChange (e) }
          />
     <input type="submit" />
     </form>
 
-
-    </section>
+    </div>
    );
   }
 }
