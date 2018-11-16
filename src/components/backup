@@ -1,0 +1,185 @@
+import React, { Component } from 'react';
+import RoomList from './components/RoomList';
+import MessageList from './components/MessageList.js';
+//import ActiveRoom from './components/ActiveRoom.js';
+import './App.css';
+import * as firebase from 'firebase';
+
+var config = {
+    apiKey: "AIzaSyCi_1xIPnZ-mrKYHW5f9dottD7c9Nx2I7U",
+    authDomain: "bloc-chatroom-e2bce.firebaseapp.com",
+    databaseURL: "https://bloc-chatroom-e2bce.firebaseio.com",
+    projectId: "bloc-chatroom-e2bce",
+    storageBucket: "bloc-chatroom-e2bce.appspot.com",
+    messagingSenderId: "1020356211026"
+  };
+
+firebase.initializeApp(config);
+class App extends Component {
+
+constructor (props) {
+    super(props);
+    this.state = {
+    roomId: '',
+    }
+this.roomsRef = firebase.database().ref('rooms');
+this.joinRoom = this.joinRoom.bind(this);
+  }
+  componentDidMount() {
+            this.roomsRef.on('child_added', snapshot => {
+            const room = snapshot.val();
+            room.key = snapshot.key; });
+
+           joinRoom () {
+                this.setState ({roomId: this.state.room.id});
+                console.log(this.state.roomId);
+       }
+
+    }
+
+
+  render() {
+    return (
+
+      <div className="wrapper">
+
+
+
+        <header className="header">Bloc Chatz
+        </header >
+
+       <div className="roomlist">
+       <RoomList joinRoom={this.joinRoom} firebase={firebase}/>
+       </div>
+
+       <div className="main">
+       <MessageList firebase={firebase}/>
+        </div>
+
+      </div>
+    );
+  }
+}
+
+export default App;
+
+
+
+
+
+import React, { Component } from 'react';
+
+class RoomList extends Component {
+  constructor (props) {
+    super (props);
+    this.state = {
+    rooms: [],
+    newRoomName: '',
+  };
+    this.roomsRef = this.props.firebase.database().ref('rooms');
+  }
+
+componentDidMount() {
+          this.roomsRef.on('child_added', snapshot => {
+          const room = snapshot.val();
+          room.key = snapshot.key;
+          this.setState({ rooms: this.state.rooms.concat( room ) })
+       });
+     }
+
+
+handleChange(e) {
+   this.setState({ newRoomName: e.target.value })
+}
+
+handleSubmit() {
+
+       const newRoomName = this.state.newRoomName;
+       this.roomsRef.push({ name: newRoomName});
+}
+
+  render () {
+    return (
+
+    <div className="chatroom">
+      <ul>
+      <h3>Room List</h3>
+     {this.state.rooms.map( (room) =>
+
+             <li key={room.key} className="room">
+             <a
+             onClick={() => this.props.joinRoom(room.id) }
+             href="#"> {room.name} </a>
+             </li>
+
+
+         )
+       }
+       </ul>
+
+
+     <form onSubmit={ (e) => this.handleSubmit(e) }>
+        <input
+          type="text"
+          placeholder="Add New Room"
+          value={ this.state.newRoomName }
+          onChange={ (e) => this.handleChange (e) }
+         />
+    <input type="submit" />
+    </form>
+
+    </div>
+   );
+  }
+}
+
+
+export default RoomList;
+
+
+import React, { Component } from 'react';
+
+return (
+
+  <div className="Active Room">
+  <h1>{this.props.activeRoomTitle}</h1>
+  </div>
+);
+
+export default ActiveRoom;
+
+
+import React, { Component } from 'react';
+
+class MessageList extends Component {
+
+ constructor (props) {
+    super (props);
+      this.state = {
+        messageList: [],
+      };
+      this.messagesRef = this.props.firebase.database().ref( 'messages');
+    }
+
+  componentDidMount() {
+              this.messagesRef.on('child_added', snapshot => {
+              const message = snapshot.val();
+              message.key = snapshot.key;
+              this.setState({ messageList: this.state.messageList.concat( message )})
+           });
+         }
+
+  render() {
+    return (
+        <div className="message">
+          { this.state.messageList.map((message) =>
+           <div key={message.key}>
+            <div>{message.content}</div>
+            </div>
+          )}
+      </div>
+       );
+   }
+}
+
+export default MessageList;
