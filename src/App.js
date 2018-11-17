@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RoomList from './components/RoomList';
 import MessageList from './components/MessageList.js';
-//import ActiveRoom from './components/ActiveRoom.js';
+import ActiveRoom from './components/ActiveRoom.js';
 import './App.css';
 import * as firebase from 'firebase';
 
@@ -52,7 +52,7 @@ this.handleChange = this.handleChange.bind(this);
         };
 
         handleChange(e) {
-           this.setState({ newRoomName: e.target.value })
+           this.setState({ newRoomName: e.target.value });
         }
 
         handleSubmit() {
@@ -61,7 +61,7 @@ this.handleChange = this.handleChange.bind(this);
         }
 
         joinRoom (room) {
-             this.setState ({ roomId: room.id })
+            this.setState ({ roomId: room});
             }
 
 
@@ -75,10 +75,11 @@ this.handleChange = this.handleChange.bind(this);
         </header >
 
        <div className="roomlist">
-       <RoomList rooms={this.state.rooms} handleSubmit={this.handleSubmit} newRoomName={this.state.newRoomName} handlejoinRoom={this.joinRoom}  firebase={firebase}/>
+       <RoomList rooms={this.state.rooms} handleChange={this.handleChange} handleSubmit={this.handleSubmit} newRoomName={this.state.newRoomName} joinRoom={this.joinRoom}  firebase={firebase}/>
        </div>
 
        <div className="main">
+       <ActiveRoom roomId={this.state.roomId}  />
        <MessageList messageList={this.state.messageList} firebase={firebase}/>
         </div>
 

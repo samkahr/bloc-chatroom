@@ -14,7 +14,7 @@ class RoomList extends Component {
      {this.props.rooms.map( (room) =>
              <li key={room.key} className="room">
              <a
-             onClick={ () => this.props.joinRoom() }
+             onClick={ () => this.props.joinRoom(room.name) }
              href="#"> {room.name} </a>
              </li>
         )
@@ -22,7 +22,7 @@ class RoomList extends Component {
        </ul>
 
 
-     <form onSubmit={ () => this.handleSubmit() }>
+     <form onSubmit={ () => this.props.handleSubmit() }>
         <input
           type="text"
           placeholder="Add New Room"
