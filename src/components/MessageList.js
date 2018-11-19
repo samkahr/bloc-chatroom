@@ -5,13 +5,18 @@ class MessageList extends Component {
   render() {
     return (
         <div className="message">
-          { this.props.messageList.map((message) =>
-           <div key={message.key}>
-            <div>{message.content}</div>
-            </div>
-          )}
-      </div>
-       );
+        <ul className="filteredMessage">
+          { this.props.filteredMessages.map( (message, index)=>
+          <div key={index}>
+             <li>{message.username}</li>
+             <li>{message.content}</li>
+             <li>{message.sentat}</li>
+             <li>{message.roomid}</li>
+           </div>
+         ) }
+           </ul>
+           </div>
+    );
    }
 }
 

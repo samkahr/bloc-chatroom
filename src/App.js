@@ -24,8 +24,10 @@ constructor (props) {
     this.state = {
     rooms: [],
     messageList: [],
+    filteredMessages: [],
     newRoomName: '',
     roomId: '',
+
     }
 
 this.roomsRef = firebase.database().ref('rooms');
@@ -41,11 +43,11 @@ this.handleChange = this.handleChange.bind(this);
             this.setState({ rooms: this.state.rooms.concat( room ) })
           });
 
-
             this.messagesRef.on('child_added', snapshot => {
             const message = snapshot.val();
             message.key = snapshot.key;
             this.setState({ messageList: this.state.messageList.concat( message )  })
+
           });
 
 
@@ -62,7 +64,10 @@ this.handleChange = this.handleChange.bind(this);
 
         joinRoom (room) {
             this.setState ({ roomId: room});
-            }
+          this.setState({ filteredMessages: this.state.messageList.filter((message) => message.roomid === this.state.roomId) })
+          }
+
+
 
 
   render() {
@@ -74,14 +79,16 @@ this.handleChange = this.handleChange.bind(this);
         <header className="header">Bloc Chatz
         </header >
 
+
        <div className="roomlist">
        <RoomList rooms={this.state.rooms} handleChange={this.handleChange} handleSubmit={this.handleSubmit} newRoomName={this.state.newRoomName} joinRoom={this.joinRoom}  firebase={firebase}/>
        </div>
 
        <div className="main">
        <ActiveRoom roomId={this.state.roomId}  />
-       <MessageList messageList={this.state.messageList} firebase={firebase}/>
+       <MessageList messageList={this.state.messageList} message={this.message} filteredMessages={this.state.filteredMessages} firebase={firebase}/>
         </div>
+
 
       </div>
     );
