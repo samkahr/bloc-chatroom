@@ -1,0 +1,29 @@
+.messageWrapper {
+  display: flexbox;
+  flex-direction: column;
+}
+
+.message {
+display: flex;
+flex-direction: row;
+}
+.messageContent {
+  border: 1px solid black;
+  border-radius: 25px;
+  margin: 5px;
+  padding: 9px;
+  font-size:2em;
+  background-color: #B0FF9D;
+}
+
+.user {
+  font-family: "Signika";
+  font-size: 1em;
+  align-item: flex-end;
+  justify-content: center;
+
+}
+
+  ul {
+  list-style-type: none;
+}

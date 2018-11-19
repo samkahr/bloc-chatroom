@@ -48,10 +48,11 @@ html, body {
 }
 
 .roomlist {
-  flex: 1; 
+  flex: 1;
   display: flex;
   background-color: #F1F1F2;
   font-family: 'Signika';
+  font-size: 1.25em;
   text-align: center;
   height: calc(100vh - 100px);
 
@@ -62,4 +63,9 @@ html, body {
  flex: 0 0 75%;
  text-align: center;
 
+}
+
+h1 {
+  font-family: "Signika";
+  font-size: 2em;
 }
