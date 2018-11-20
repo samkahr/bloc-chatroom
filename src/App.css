@@ -56,14 +56,15 @@ html, body {
   text-align: center;
   height: calc(100vh - 100px);
 
-
 }
 
 .main {
  flex: 0 0 75%;
  text-align: center;
-
+ font-family: 'Signika';
+ font-size: 1.25em;
 }
+
 
 h1 {
   font-family: "Signika";

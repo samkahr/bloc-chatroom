@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import RoomList from './components/RoomList';
 import MessageList from './components/MessageList.js';
-import Users from './components/Users.js';
 import ActiveRoom from './components/ActiveRoom.js';
 import './App.css';
 import * as firebase from 'firebase';
@@ -27,7 +26,6 @@ constructor (props) {
     filteredMessages: [],
     newRoomName: '',
     roomId: '',
-    user: '',
 
     }
 
@@ -60,10 +58,6 @@ this.handleChange = this.handleChange.bind(this);
             //this.setState({ filteredMessages: this.state.messageList.filter((message) => message.roomid === this.state.roomId) })
           }
 
-        setUser(user) {
-             this.setState({user: user});
-           }
-
 
   render() {
     return (
@@ -71,16 +65,13 @@ this.handleChange = this.handleChange.bind(this);
       <div className="wrapper">
 
 
-        <header className="header"> Bloc Chatz
+        <header className="header">Bloc Chatz
         </header >
+
 
        <div className="roomlist">
        <RoomList rooms={this.state.rooms} handleChange={this.handleChange} handleSubmit={this.handleSubmit} newRoomName={this.state.newRoomName} joinRoom={this.joinRoom}  firebase={firebase}/>
-       <div className="users">
-       <Users user={this.state.user} setUser={this.setUser} firebase={firebase} />
        </div>
-       </div>
-
 
        <div className="main">
        <ActiveRoom roomId={this.state.roomId}  />
