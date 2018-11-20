@@ -24,7 +24,6 @@ constructor (props) {
     super(props);
     this.state = {
     rooms: [],
-    filteredMessages: [],
     newRoomName: '',
     roomId: '',
     user: '',
@@ -57,7 +56,6 @@ this.handleChange = this.handleChange.bind(this);
 
         joinRoom (room) {
             this.setState ({ roomId: room});
-            //this.setState({ filteredMessages: this.state.messageList.filter((message) => message.roomid === this.state.roomId) })
           }
 
         setUser(user) {
@@ -76,15 +74,12 @@ this.handleChange = this.handleChange.bind(this);
 
        <div className="roomlist">
        <RoomList rooms={this.state.rooms} handleChange={this.handleChange} handleSubmit={this.handleSubmit} newRoomName={this.state.newRoomName} joinRoom={this.joinRoom}  firebase={firebase}/>
-       <div className="users">
        <Users user={this.state.user} setUser={this.setUser} firebase={firebase} />
        </div>
-       </div>
-
 
        <div className="main">
        <ActiveRoom roomId={this.state.roomId}  />
-       <MessageList roomId={this.state.roomId} firebase={firebase} />
+       <MessageList roomId={this.state.roomId} user={this.state.user} setUser={this.setUser} roomId={this.state.roomId} firebase={firebase} />
         </div>
 
 
