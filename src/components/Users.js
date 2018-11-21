@@ -6,6 +6,9 @@ class Users extends Component {
 
   constructor(props) {
     super(props);
+    this.state= {
+
+  }
 
     this.signIn=this.signIn.bind(this);
     this.signOut=this.signOut.bind(this);
@@ -14,7 +17,8 @@ class Users extends Component {
   componentDidMount() {
     this.props.firebase.auth().onAuthStateChanged( user => {
     this.props.setUser(user);
-    })
+      });
+
     }
 
   signIn() {

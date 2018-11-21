@@ -26,7 +26,16 @@ componentDidMount() {
     const message = snapshot.val();
     message.key = snapshot.key;
     this.setState({ messageList: this.state.messageList.concat( message ) })
-  });
+  })
+
+   //const ref = firebase.database().ref('messages').child(this.state.message.key)
+   //this.messagesRef.on('child_removed', (child) => {
+    //let remove = this.state.newMessage.filter((newMessage) => {
+            //  return newMessage.key !== child.key
+            //  });
+             //this.setState({ remove })
+   //})
+
 }
 
 handleChange(e) {
@@ -34,7 +43,8 @@ handleChange(e) {
 }
 
 handleSubmit(e) {
-       this.messagesRef.push({
+      e.preventDefault();
+      this.messagesRef.push({
          username: this.props.user ? this.props.user.displayName: "Guest",
          content: this.state.newMessage,
          roomid: this.props.roomId,
@@ -42,14 +52,10 @@ handleSubmit(e) {
        });
        this.setState({newMessage: ''}) }
 
-deleteMessage (message, index) {
-
-  const remove = this.state.newMessage.filter((message, i) => {
-      return i !== index
-    });
-   this.setState({ newMessage: remove });
-
-}
+removeItem ( messageKey ) {
+      const itemRef = firebase.database().ref(`messages/${messageKey}`);;
+      itemRef.remove();
+         }
 
 
   render() {
@@ -57,10 +63,10 @@ deleteMessage (message, index) {
         <div className="messageWrapper">
         <ul className="filteredMessage">
           { this.state.messageList.filter((message) => message.roomid === this.props.roomId).map( (message, index)=>
-          <div className="message" key={index}>
+          <div className="message" key={message.key}>
              <li className="user">{message.username}</li>
              <li className="messageContent">{message.content}</li>
-             <input type="button" value= "delete" onClick={ () => this.deleteMessage (message, index) } />
+             <input type="button" value= "delete"  onClick={ () => this.removeItem(message.key) } />
            </div>
          ) }
            </ul>

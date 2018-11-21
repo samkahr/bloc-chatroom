@@ -30,36 +30,19 @@ constructor (props) {
 
     }
 
-this.roomsRef = firebase.database().ref('rooms');
-this.messagesRef = firebase.database().ref( 'messages');
+
 this.joinRoom = this.joinRoom.bind(this);
-this.handleSubmit = this.handleSubmit.bind(this);
-this.handleChange = this.handleChange.bind(this);
+this.setUser = this.setUser.bind(this);
+
   }
-  componentDidMount() {
-            this.roomsRef.on('child_added', snapshot => {
-            const room = snapshot.val();
-            room.key = snapshot.key;
-            this.setState({ rooms: this.state.rooms.concat( room ) })
-          });
 
-        };
-
-        handleChange(e) {
-           this.setState({ newRoomName: e.target.value });
-        }
-
-        handleSubmit() {
-               const newRoomName = this.state.newRoomName;
-               this.roomsRef.push({ name: newRoomName});
-        }
 
         joinRoom (room) {
             this.setState ({ roomId: room});
           }
 
-        setUser(user) {
-             this.setState({user: user});
+        setUser (user) {
+          user ? this.setState({ user: user }) : this.setState({ user: null });
            }
 
 
