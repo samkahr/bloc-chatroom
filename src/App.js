@@ -36,6 +36,7 @@ this.messagesRef = firebase.database().ref( 'messages');
 this.joinRoom = this.joinRoom.bind(this);
 this.handleSubmit = this.handleSubmit.bind(this);
 this.handleChange = this.handleChange.bind(this);
+this.setUser = this.setUser.bind(this);
   }
   componentDidMount() {
             this.roomsRef.on('child_added', snapshot => {
