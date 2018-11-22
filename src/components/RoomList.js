@@ -29,6 +29,7 @@ handleSubmit() {
 
        const newRoomName = this.state.newRoomName;
        this.roomsRef.push({ name: newRoomName});
+       this.setState({newRoomName: ''})
 }
 
   render () {
