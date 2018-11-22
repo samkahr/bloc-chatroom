@@ -11,8 +11,8 @@ flex-direction: row;
   border: 1px solid black;
   border-radius: 25px;
   margin: 5px;
-  padding: 9px;
-  font-size:2em;
+  padding: 5px;
+  font-size:1em;
   background-color: #B0FF9D;
 }
 
@@ -22,6 +22,39 @@ flex-direction: row;
   align-item: flex-end;
   justify-content: center;
 
+}
+
+.messageButton {
+    display: inline;
+    border: none;
+    padding: 0.02em;
+    //height: .05em;
+    margin: 0;
+    text-decoration: none;
+    background: #B0FF9D;
+    font-family: sans-serif;
+    font-size: .6em;
+    cursor: pointer;
+    text-align: center;
+    transition: background 250ms ease-in-out,
+                transform 150ms ease;
+
+}
+
+
+
+.messageButton:hover,
+.messageButton:focus {
+    background: #0053ba;
+}
+
+.messageButton:focus {
+    outline: 1px solid #fff;
+    outline-offset: -4px;
+}
+
+.messageButton:active {
+    transform: scale(0.5);
 }
 
   ul {

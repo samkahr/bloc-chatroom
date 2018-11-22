@@ -14,6 +14,7 @@ class RoomList extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.roomsRef = firebase.database().ref('rooms');
 
+
   }
 
   componentDidMount() {
@@ -23,20 +24,29 @@ class RoomList extends Component {
             this.setState({ rooms: this.state.rooms.concat( room ) })
           });
 
-        };
+          this.roomsRef.on('child_removed', (child) => {
+          let remove = this.state.rooms.filter((room) => {
+                   return room.key !== child.key
+                   });
+                   this.setState({ remove })
+                 })
+            }
 
     handleChange(e) {
          this.setState({ newRoomName: e.target.value });
       }
 
-    handleSubmit() {
-             const newRoomName = this.state.newRoomName;
-             this.roomsRef.push({ name: newRoomName});
+    handleSubmit(e) {
+             this.roomsRef.push({ name: this.state.newRoomName});
+             this.setState({newRoomName: ''})
       }
 
     removeItem ( roomKey ) {
-            const itemRef = firebase.database().ref(`messages/${roomKey}`);;
-            itemRef.remove();
+            this.roomsRef.child(roomKey).remove();
+            let remove = this.state.rooms.filter((room) => {
+                     return room.key !== roomKey
+                     });
+                     this.state.rooms = remove
                }
   render () {
     return (
@@ -51,7 +61,7 @@ class RoomList extends Component {
              <a
              onClick={ () => this.props.joinRoom(room.name) }
              href="#"> {room.name} </a>
-             <input type="button" value= "delete"  onClick={ () => this.removeItem(room.key) } />
+             <input className="button" type="button" value= "delete"  onClick={ () => this.removeItem(room.key) } />
              </li>
         )
        }
@@ -65,7 +75,7 @@ class RoomList extends Component {
           value={this.state.newRoomName}
           onChange={ (e) => this.handleChange (e) }
          />
-    <input type="submit" />
+    <input className="button" type="submit" />
     </form>
 
     </div>

@@ -7,18 +7,16 @@ class MessageList extends Component {
       super(props);
       this.state = {
         messageList: [],
-        newMessage: [
-                       { username: "" },
-                       { content: "" },
-                       { roomid: "" },
-                       { sentat: "" },
-                       { newMessage: "" },
-        ]
+        username: '',
+        content: '',
+        sentat: '',
+        newMessage: '',
+
       }
 
     this.messagesRef = firebase.database().ref( 'messages');
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.removeItem = this.removeItem.bind(this);
   }
 
 componentDidMount() {
@@ -28,34 +26,38 @@ componentDidMount() {
     this.setState({ messageList: this.state.messageList.concat( message ) })
   })
 
-   //const ref = firebase.database().ref('messages').child(this.state.message.key)
-   //this.messagesRef.on('child_removed', (child) => {
-    //let remove = this.state.newMessage.filter((newMessage) => {
-            //  return newMessage.key !== child.key
-            //  });
-             //this.setState({ remove })
-   //})
-
+   this.messagesRef.on('child_removed', (child) => {
+   let remove = this.state.messageList.filter((newMessage) => {
+            return newMessage.key !== child.key
+            });
+            this.setState({ remove })
+     })
 }
 
 handleChange(e) {
-   this.setState({ newMessage: e.target.value });
+   this.setState({ content: e.target.value });
 }
 
 handleSubmit(e) {
-      e.preventDefault();
-      this.messagesRef.push({
+  if ( e.key === 'Enter' ) {
+       this.messagesRef.push({
          username: this.props.user ? this.props.user.displayName: "Guest",
-         content: this.state.newMessage,
+         content: this.state.content,
          roomid: this.props.roomId,
          sentat: this.props.firebase.database.ServerValue.TIMESTAMP,
        });
-       this.setState({newMessage: ''}) }
+       e.preventDefault();
+       this.setState({content: ''})
+     }
+  }
 
 removeItem ( messageKey ) {
-      const itemRef = firebase.database().ref(`messages/${messageKey}`);;
-      itemRef.remove();
-         }
+      this.messagesRef.child(messageKey).remove();
+          let remove = this.state.messageList.filter((newMessage) => {
+            return newMessage.key !== messageKey
+            });
+            this.state.messageList = remove
+    }
 
 
   render() {
@@ -65,24 +67,31 @@ removeItem ( messageKey ) {
           { this.state.messageList.filter((message) => message.roomid === this.props.roomId).map( (message, index)=>
           <div className="message" key={message.key}>
              <li className="user">{message.username}</li>
-             <li className="messageContent">{message.content}</li>
-             <input type="button" value= "delete"  onClick={ () => this.removeItem(message.key) } />
+             <li className="messageContent">
+             {message.content}
+             <br></br>
+             <input className="messageButton" type="button" value= "delete"  onClick={ () => this.removeItem(message.key) } />
+             </li>
+
            </div>
          ) }
            </ul>
 
 
       <div className="form__row">
-         <form onSubmit= { (e) => this.handleSubmit(e) } >
-         <input
+        <form onKeyPress= { (e) => this.handleSubmit(e)}>
+         <textarea
+           rows="4"
+           cols="50"
            className="form__input"
            type="text"
            placeholder="Type message"
            value={this.state.content}
            onChange={ (e) => this.handleChange(e) }
          />
-          <input type='submit' value='send'/>
          </form>
+
+
        </div>
            </div>
     );

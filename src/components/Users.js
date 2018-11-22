@@ -34,8 +34,8 @@ class Users extends Component {
    return(
        <div className="username">
          <h3>{this.props.user ? this.props.user.displayName : "Guest"}</h3>
-         <button className="signin" onClick={this.signIn}> Sign In </button>
-         <button className="signout" onClick={this.signOut}> Sign Out </button>
+         <button className="button" onClick={this.signIn}> Sign In </button>
+         <button className="button" onClick={this.signOut}> Sign Out </button>
        </div>
    )
  }
